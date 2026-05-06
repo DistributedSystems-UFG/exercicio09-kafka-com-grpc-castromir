@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package temperature_service;
+
+service TemperatureQuery {
+  rpc GetLatestAggregate (SensorId) returns (TemperatureAggregate);
+  rpc ListLatestAggregates (Empty) returns (TemperatureAggregateList);
+  rpc GetHistory (HistoryQuery) returns (TemperatureAggregateList);
+}
+
+message Empty {}
+
+message SensorId {
+  string sensor_id = 1;
+}
+
+message HistoryQuery {
+  string sensor_id = 1;
+  string from_iso = 2;
+  string to_iso = 3;
+}
+
+message TemperatureAggregate {
+  int64 id = 1;
+  string sensor_id = 2;
+  string window_start_iso = 3;
+  string window_end_iso = 4;
+  double avg_celsius = 5;
+  int32 sample_count = 6;
+  string computed_at_iso = 7;
+}
+
+message TemperatureAggregateList {
+  repeated TemperatureAggregate items = 1;
+}
